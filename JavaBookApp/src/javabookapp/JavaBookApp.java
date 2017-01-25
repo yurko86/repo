@@ -47,20 +47,22 @@ public class JavaBookApp extends Application {
         TextArea feedback = new TextArea();
         grid.add(feedback, 1, 1);
         
-        //Image img = new Image("1.jpg");
+        
+        // try to load image
         try{
-        Image image = new Image("https://upload.wikimedia.org/wikipedia/commons/a/a7/Frankenstein's_monster_(Boris_Karloff).jpg");
-        //Image image = new Image("file:\\c:/1.png");
-        ///System.out.println(getClass().getResource("1.png"));
-        ImageView imageView = new ImageView();
-        imageView.setImage(image);        
-        grid.add(imageView, 2, 0,1,2);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(100);
-        imageView.setFitHeight(100);
+        
+            Image image;
+            image = new Image(getClass().getResource("resources/1.png").toString());
+        
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);        
+            grid.add(imageView, 2, 0,1,2);
+            imageView.setPreserveRatio(true);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
         }
         catch(Exception e){
-        System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         
         
