@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-//package javabookapp;
+package javabookapp;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,52 +14,79 @@ import java.util.Properties;
 
 public class PreferenceIO {
  
-private static String bookName;
-private static String feedback;
+//private static String feedback;
 private static Properties props = new Properties();
 
-private static final String path = "preference.ini";
+private static final String FILE_PATH = "preference.ini";
+
+private static final String TITLE = "TITLE";
+private static final String AUTHOR = "AUTHOR";
+private static final String CATEGORY = "CATEGORY";
+private static final String PROGRESS= "PROGRESS";
+private static final String FEEDBACK= "FEEDBACK";
+private static final String STATUS= "STATUS";
+
+
+private final JavaBook book = new JavaBook();
 
 public PreferenceIO(){
-	getValuesFromFile();
-	}
+	//getValuesFromFile();
+}
 
-static void getValuesFromFile() {
+JavaBook getValuesFromFile() {
     try {
-        FileInputStream in = new FileInputStream(path);
+        
+        FileInputStream in = new FileInputStream(FILE_PATH);
         props.load(in);
         in.close();
     
-        bookName = props.getProperty("BOOK_NAME");
-        feedback = props.getProperty("FEEDBACK");
+        book.setBookTitle( props.getProperty(TITLE));
+        book.setBookAuthor(props.getProperty(AUTHOR));
+        book.setBookCategory(props.getProperty(CATEGORY));
+        book.setBookProgress(props.getProperty(PROGRESS));
+        book.setBookFeedback(props.getProperty(FEEDBACK));
+        book.setBookStatus(props.getProperty(STATUS));
+        
     }
     catch(IOException ex){
         System.out.println(ex.getMessage());
         createPreferenceFile();
     }
+    return book;
 }
 
-static void createPreferenceFile(){
+void createPreferenceFile(){
     try {
-            FileOutputStream out = new FileOutputStream(path);
-            bookName = "java book name";
-            feedback = "initial feedback";
-            props.setProperty("BOOK_NAME", bookName);
-            props.setProperty("FEEDBACK", feedback);
-            props.setProperty("LINK_TO_IMG", "3");
-            props.store(out, null);
-            out.close();
+            System.out.println("---Create default book---");
+
+            // set default values
+            book.setBookTitle(TITLE);
+            book.setBookAuthor(AUTHOR);
+            book.setBookCategory(CATEGORY);
+            book.setBookProgress(PROGRESS);
+            book.setBookFeedback(FEEDBACK);
+            book.setBookStatus(STATUS);
+            
+            // write book object to file 
+            saveValuesToFile(book);
+            
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
 }
 
-static void saveValuesToFile(){
+static void saveValuesToFile(JavaBook book){
     try {
-        FileOutputStream out = new FileOutputStream(path);
+        FileOutputStream out = new FileOutputStream(FILE_PATH);
 
-        props.setProperty("FEEDBACK", feedback);
+        props.setProperty(TITLE, book.getBookTitle());
+        props.setProperty(AUTHOR, book.getBookAuthor());
+        props.setProperty(CATEGORY,book.getBookCategory());
+        props.setProperty(PROGRESS, book.getBookProgress());
+        props.setProperty(STATUS, book.getBookStatus());
+        props.setProperty(FEEDBACK, book.getBookFeedback());
+
         props.store(out, null);
         out.close();
     }
@@ -73,17 +95,13 @@ static void saveValuesToFile(){
     }
 }
 
-public String getBookName(){
-    return bookName;
+public JavaBook getBook(){
+    return book;
 }
 
-public String getFeedback(){
-    return feedback;
-}
 
-public void setFeedback(String pFeedback){
-    feedback = pFeedback;
-    saveValuesToFile();
+public void saveBook(JavaBook book){    
+    saveValuesToFile(book);
 }
 
 }
