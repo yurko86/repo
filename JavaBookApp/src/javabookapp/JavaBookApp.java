@@ -1,7 +1,9 @@
-package javabookapp;
+//package javabookapp;
 
+import java.util.ArrayList;
 import javafx.scene.image.Image;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,123 +11,158 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
 /**
  *
  * @author iurii
  */
 public class JavaBookApp extends Application {
-    
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        
-        // create preference object
-        PreferenceIO preference = new PreferenceIO();
-        
-        // create book object
-        JavaBook book = preference.getValuesFromFile();
-        
-        // read values from ini file to book object
-        
-        // create grid
-        GridPane grid = new GridPane();
-	grid.setAlignment(Pos.CENTER);
-	grid.setHgap(10);
-	grid.setVgap(10);
-        
-        // put labels and textfields to grid
-        
-        //book title        
-        TextField bookAuthorTxt = new TextField(book.getBookAuthor());
-        grid.add(bookAuthorTxt, 0, 0,2,1);
-        
-        //book title
-        TextField bookTitleTxt = new TextField(book.getBookTitle());
-        grid.add(bookTitleTxt, 0, 1,2,1);
-                
-        //
-        //bookCategory
-        Label bookCategoryLbl = new Label("Book Category:");
-        grid.add(bookCategoryLbl, 0, 2);
-        TextField bookCategoryTxt = new TextField(book.getBookCategory());
-        grid.add(bookCategoryTxt, 1, 2);
-        
-        //bookStatus
-        Label bookStatusLbl = new Label("Book Status:");
-        grid.add(bookStatusLbl, 0, 3);
-        TextField bookStatusTxt = new TextField(book.getBookStatus());
-        grid.add(bookStatusTxt, 1, 3);
-        
-        //bookProgress
-        Label bookProgressLbl = new Label("Book Progress:");
-        grid.add(bookProgressLbl, 0, 4);
-        TextField bookProgressTxt = new TextField(book.getBookProgress());
-        grid.add(bookProgressTxt,1,4);
-        
-        //feedback
-        Label feedbackLbl = new Label("Feedback:");
-        grid.add(feedbackLbl, 0, 5);
-        TextArea bookFeedback = new TextArea(book.getBookFeedback());
-        grid.add(bookFeedback, 1, 5);
-        
-        
-        // try to load image
-        try{
-        System.out.println("--try img--");        
-            Image image;
-            image =  new Image("http://ecx.images-amazon.com/images/I/51F08bXsljL._SX258_BO1,204,203,200_.jpg");
-      //  System.out.println( getClass().getResource("./resources/1.png").toString());
 
-            ImageView imageView = new ImageView();
-            imageView.setImage(image);        
-            grid.add(imageView, 2, 0,1,7);
-            imageView.setPreserveRatio(true);
-            imageView.setFitWidth(100);
-            imageView.setFitHeight(100);
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
+    // map for labels
+    private Map<Label, TextField> bookUI = new HashMap<>();
+
+    private JavaBook book;
+
+    @Override
+    public void start(Stage primaryStage) {
+        PreferenceIO preference = new PreferenceIO();
+        book = preference.getValuesFromFile();
+        GridPane grid = createGrid();
+        ToggleGroup group = new ToggleGroup();
+        TextField bookAuthorTxt = new TextField(book.getBookAuthor());
+        TextField bookTitleTxt = new TextField(book.getBookTitle());
+        TextField bookCategoryTxt = new TextField(book.getBookCategory());
+        TextField bookStatusTxt = new TextField(book.getBookStatus());
+        TextField bookProgressTxt = new TextField(book.getBookProgress());
+        TextArea bookFeedback = new TextArea(book.getBookFeedback());
+        //put labels to  map
+        bookUI.put(new Label("Author:"), bookAuthorTxt);
+        bookUI.put(new Label("Title:"), bookTitleTxt);
+        bookUI.put(new Label("Category:"), bookCategoryTxt);
+        bookUI.put(new Label("Status:"), bookStatusTxt);
+        bookUI.put(new Label("Progress:"), bookProgressTxt);
+
+        // put labels and textfields to grid        
+        setLabelsOnGrid(grid);
         
+        //put feedback textfield
+        setFeedbackOnGrid(grid,bookFeedback);
         
+        //add radio button
+        setRadiobuttonOnGrid(grid, group);
+
         // add buton to grid
-        Button saveBtn = new Button();
-        saveBtn.setText("Save");
+        Button saveBtn = new Button("Save");
+
         saveBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+
                 book.setBookAuthor(bookAuthorTxt.getText());
                 book.setBookTitle(bookTitleTxt.getText());
                 book.setBookCategory(bookCategoryTxt.getText());
                 book.setBookStatus(bookStatusTxt.getText());
                 book.setBookProgress(bookProgressTxt.getText());
                 book.setBookFeedback(bookFeedback.getText());
-        
+                
+                try {
+                    book.setBookRating(group.getSelectedToggle().getUserData().toString());
+                } catch (Exception e) {
+                    System.err.println("Can't read radio button value");
+                };
+
                 preference.saveBook(book);
-             }
+            }
         });
-        grid.add(saveBtn, 0, 6);
-        
-               
+        grid.add(saveBtn, 2, 6);
+
+        // try to load image
+        try {
+
+            Image bookCover = new Image(getClass().getResourceAsStream(book.getBookImageUrl()));
+            ImageView imageView = new ImageView(bookCover);
+
+            grid.add(imageView, 2, 0, 1, 7);
+            imageView.setPreserveRatio(true);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         // set up containers
         Scene scene = new Scene(grid, 650, 400);
-	primaryStage.setScene(scene);
-        primaryStage.setTitle("Book app");        
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Book app");
         primaryStage.show();
-        
-        
+
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    private GridPane createGrid() {
+        // create grid
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        return grid;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
+
+    private void setLabelsOnGrid(GridPane grid) {
+        int rowPos = 0;
+        for (Map.Entry<Label, TextField> entry : bookUI.entrySet()) {
+            Label key = entry.getKey();
+            TextField value = entry.getValue();
+            grid.add(key, 0, rowPos);
+            grid.add(value, 1, rowPos);
+            rowPos++;
+        }
+    }
+
+    private void setFeedbackOnGrid(GridPane grid, TextArea feedback){
+            TextArea bookFeedback = feedback;
+            grid.add(new Label("Feedback:"), 0, 5);
+            grid.add(bookFeedback, 1, 5);
+            
+    }
     
+    private void setRadiobuttonOnGrid(GridPane grid, ToggleGroup group) {
+        grid.add(new Label("Rating:"), 0, 6);
+
+        ArrayList<RadioButton> radioButtonGroup = new ArrayList<>();
+
+        radioButtonGroup.add(new RadioButton("1"));
+        radioButtonGroup.add(new RadioButton("2"));
+        radioButtonGroup.add(new RadioButton("3"));
+        radioButtonGroup.add(new RadioButton("4"));
+        radioButtonGroup.add(new RadioButton("5"));
+        radioButtonGroup.add(new RadioButton("6"));
+
+        HBox box = new HBox(20);
+
+        for (RadioButton rb : radioButtonGroup) {
+            rb.setToggleGroup(group);
+            box.getChildren().add(rb);
+            rb.setUserData(rb.getText());
+            if (rb.getText().compareTo(book.getBookRating()) == 0) {
+                rb.setSelected(true);
+            }
+        }
+
+        grid.add(box, 1, 6, 2, 1);
+
+    }
+
 }
