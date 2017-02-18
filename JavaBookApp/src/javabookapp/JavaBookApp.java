@@ -1,4 +1,4 @@
-//package javabookapp;
+package javabookapp;
 
 import java.util.ArrayList;
 import javafx.scene.image.Image;
@@ -35,14 +35,13 @@ public class JavaBookApp extends Application {
     public void start(Stage primaryStage) {
         PreferenceIO preference = new PreferenceIO();
         book = preference.getValuesFromFile();
-        GridPane grid = createGrid();
-        ToggleGroup group = new ToggleGroup();
+        GridPane grid = createGrid();        
         TextField bookAuthorTxt = new TextField(book.getBookAuthor());
         TextField bookTitleTxt = new TextField(book.getBookTitle());
         TextField bookCategoryTxt = new TextField(book.getBookCategory());
         TextField bookStatusTxt = new TextField(book.getBookStatus());
         TextField bookProgressTxt = new TextField(book.getBookProgress());
-        TextArea bookFeedback = new TextArea(book.getBookFeedback());
+        
         //put labels to  map
         bookUI.put(new Label("Author:"), bookAuthorTxt);
         bookUI.put(new Label("Title:"), bookTitleTxt);
@@ -53,12 +52,15 @@ public class JavaBookApp extends Application {
         // put labels and textfields to grid        
         setLabelsOnGrid(grid);
         
+        TextArea bookFeedback = new TextArea(book.getBookFeedback());
         //put feedback textfield
         setFeedbackOnGrid(grid,bookFeedback);
         
+        ToggleGroup group = new ToggleGroup();
         //add radio button
         setRadiobuttonOnGrid(grid, group);
 
+                
         // add buton to grid
         Button saveBtn = new Button("Save");
 
@@ -77,23 +79,22 @@ public class JavaBookApp extends Application {
                     book.setBookRating(group.getSelectedToggle().getUserData().toString());
                 } catch (Exception e) {
                     System.err.println("Can't read radio button value");
-                };
-
+                }
                 preference.saveBook(book);
             }
         });
-        grid.add(saveBtn, 2, 6);
+        grid.add(saveBtn, 2, 7);
 
         // try to load image
+        
+        ImageView imageView = new ImageView();
+        grid.add(imageView, 2, 0, 1, 7);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(100);
+        
         try {
-
-            Image bookCover = new Image(getClass().getResourceAsStream(book.getBookImageUrl()));
-            ImageView imageView = new ImageView(bookCover);
-
-            grid.add(imageView, 2, 0, 1, 7);
-            imageView.setPreserveRatio(true);
-            imageView.setFitWidth(100);
-            imageView.setFitHeight(100);
+            imageView.setImage(new Image(book.getBookImageUrl())); 
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -142,13 +143,12 @@ public class JavaBookApp extends Application {
         grid.add(new Label("Rating:"), 0, 6);
 
         ArrayList<RadioButton> radioButtonGroup = new ArrayList<>();
-
-        radioButtonGroup.add(new RadioButton("1"));
-        radioButtonGroup.add(new RadioButton("2"));
-        radioButtonGroup.add(new RadioButton("3"));
-        radioButtonGroup.add(new RadioButton("4"));
-        radioButtonGroup.add(new RadioButton("5"));
-        radioButtonGroup.add(new RadioButton("6"));
+        radioButtonGroup.add(new RadioButton("awful"));
+        radioButtonGroup.add(new RadioButton("inadequate"));
+        radioButtonGroup.add(new RadioButton("adequate"));
+        radioButtonGroup.add(new RadioButton("good"));
+        radioButtonGroup.add(new RadioButton("very good"));
+        radioButtonGroup.add(new RadioButton("terrific"));
 
         HBox box = new HBox(20);
 

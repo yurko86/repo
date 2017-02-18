@@ -1,4 +1,4 @@
-//package javabookapp;
+package javabookapp;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,8 +26,6 @@ public class PreferenceIO {
 
     private JavaBook book;
 
-    public PreferenceIO() {
-    }
 
     JavaBook getValuesFromFile() {
         try {

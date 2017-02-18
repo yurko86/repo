@@ -1,4 +1,4 @@
-//package javabookapp;
+package javabookapp;
 
 /**
  *
@@ -23,8 +23,9 @@ public class JavaBook {
         bookStatus = "In progress";
         bookProgress = "1/700";
         bookImageUrl = "http://ecx.images-amazon.com/images/I/51F08bXsljL._SX258_BO1,204,203,200_.jpg";
-        bookRating = "1";
-
+        bookRating = "good";
+        
+        
     }
 
     public JavaBook(String bookTitle, String bookAuthor, String bookCategory, String bookProgress, String bookFeedback, String bookStatus, String bookImageUrl, String bookRating) {
