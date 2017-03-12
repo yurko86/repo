@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="converter.FXMLController">
+  
+    <children>
+            
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="4" spacing="10">
+            <fx:define>
+                <ToggleGroup fx:id="myToggleGroup"/>
+            </fx:define>
+            <children>
+                <RadioButton selected="true" text="Data transfer speed" toggleGroup="$myToggleGroup"/>
+                <RadioButton text="Data storage" toggleGroup="$myToggleGroup"/>
+            </children>
+        </VBox>
+        
+        <Separator  GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4"  />
+
+        <Label  GridPane.columnIndex="1" GridPane.rowIndex="3" text="Input amount" />
+        <Label GridPane.columnIndex="2" GridPane.rowIndex="3" text="Input Unit" />
+        <Label GridPane.columnIndex="3" GridPane.rowIndex="3" text="Output amount" />
+        <Label GridPane.columnIndex="4" GridPane.rowIndex="3" text="Output Unit" />
+        
+        <TextField fx:id="textFieldFrom" promptText="Enter value" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <ComboBox fx:id="fromUnit" prefHeight="27.0" prefWidth="110.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+        <TextField editable="false" fx:id="textFieldTo" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+        <ComboBox fx:id="toUnit" prefHeight="27.0" prefWidth="110.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+        
+    </children>
+</GridPane>
