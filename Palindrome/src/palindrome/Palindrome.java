@@ -33,7 +33,7 @@ public class Palindrome {
         return s.nextLine();
     }
     
-    private static boolean evaluateString(String str) {
+    static boolean evaluateString(String str) {
 
         boolean result = true;
 
