@@ -16,7 +16,7 @@ public class LettersPercentageInText {
     public static void main(String[] args) {
 
         word = getValue();
-        lettersCount = word.length();
+        lettersCount = 0;
 
         displayResult(CountOccurance(word));
 
@@ -39,6 +39,9 @@ public class LettersPercentageInText {
 
         for (char letter : str.toCharArray()) {
             if (Character.isLetter(letter)) {
+                
+                lettersCount++;
+                
                 if (lettersList.containsKey(letter)) {
                     lettersList.replace(letter, lettersList.get(letter) + 1);
                 } else {
