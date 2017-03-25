@@ -1,6 +1,5 @@
 package wordsnake;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -76,8 +75,9 @@ public class WordSnake {
 
             }
         }
-
+        System.out.println("---------------------------------------------");
         System.out.println("Win player " + playersList.get(0));
+        System.out.println("---------------------------------------------");
     }
 
     private static String getValue() {
