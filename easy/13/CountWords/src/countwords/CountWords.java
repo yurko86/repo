@@ -1,4 +1,4 @@
-package countworlds;
+package countwords;
 
 import java.util.Scanner;
 
@@ -6,7 +6,7 @@ import java.util.Scanner;
  *
  * @author iurii
  */
-public class CountWorlds {
+public class CountWords {
 
     /**
      * @param args the command line arguments

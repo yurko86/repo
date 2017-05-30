@@ -1,5 +1,6 @@
-package countworlds;
+package countwords;
 
+import countwords.CountWords;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,9 +10,9 @@ import static org.junit.Assert.*;
  *
  * @author iurii
  */
-public class CountWorldsTest {
+public class CountWordsTest {
 
-    public CountWorldsTest() {
+    public CountWordsTest() {
     }
 
     @BeforeClass
@@ -25,13 +26,13 @@ public class CountWorldsTest {
     @Test
     public void testCalculate() {
         System.out.println("Test calculate");
-        assertEquals(3, CountWorlds.calculate("asd ads asdd"));
+        assertEquals(3, CountWords.calculate("asd ads asdd"));
     }
 
     @Test
     public void testRemoveDoubleBackspace() {
         System.out.println("Test removeDoubleBackspace");
-        assertEquals("d asd ads asdd", CountWorlds.removeDoubleBackspace("  d  asd    ads    asdd    "));
+        assertEquals("d asd ads asdd", CountWords.removeDoubleBackspace("  d  asd    ads    asdd    "));
     }
 
     

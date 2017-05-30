@@ -1,4 +1,4 @@
-package daystoday;
+package daystodate;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.text.ParseException;
  *
  * @author iurii
  */
-public class DaysToDay {
+public class DaysToDate {
 
     static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
