@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+
+    <import resource="discount.xml"/>
+
+    <!-- definition of auditoriums-->
+    <util:set id="auditoriums" set-class="java.util.HashSet">
+        <bean class="domain.Auditorium">
+            <constructor-arg index="0" value="BlackAuditorium"/>
+            <constructor-arg index="1" value="20"/>
+            <constructor-arg index="2">
+                <set>
+                    <value>1</value>
+                    <value>3</value>
+                </set>
+            </constructor-arg>
+        </bean>
+        <bean class="domain.Auditorium">
+            <constructor-arg index="0" value="GreenAuditorium"/>
+            <constructor-arg index="1" value="120"/>
+            <constructor-arg index="2">
+            <set>
+                <value>1</value>
+            </set>
+            </constructor-arg>
+        </bean>
+        <bean class="domain.Auditorium">
+            <constructor-arg index="0" value="WhiteAuditorium"/>
+            <constructor-arg index="1" value="300"/>
+        <constructor-arg index="2">
+            <set>
+                <value>1</value>
+                <value>3</value>
+                <value>5</value>
+                <value>100</value>
+            </set>
+        </constructor-arg>
+        </bean>
+    </util:set>
+
+
+    <bean id="user" class="domain.User" scope="prototype"/>
+
+    <bean id="defaultUser" class="domain.User" scope="prototype"/>
+
+    <bean id="event" class="domain.Event" scope="prototype"/>
+
+    <bean id="scheduleService" class="service.ScheduleService"/>
+
+    <bean id="userService" class="service.MyUserService"/>
+
+    <bean id="auditoriumService" class="service.MyAuditoriumService"/>
+
+    <bean id="bookingService" class="service.MyBookingService">
+        <constructor-arg ref="scheduleService"/>
+        <constructor-arg ref="discountService"/>
+    </bean>
+
+    <bean id="ticket" class="domain.Ticket" scope="prototype"/>
+
+</beans>
